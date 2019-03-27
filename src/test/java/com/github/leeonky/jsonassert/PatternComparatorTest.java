@@ -9,32 +9,33 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.skyscreamer.jsonassert.JSONAssert.assertEquals;
 
 class PatternComparatorTest {
+
+    private void assertExpect(final String expect, final String actualValue) throws JSONException {
+        assertEquals("{\"prop\":\"" + expect + "\"}", "{\"prop\":" + actualValue + "}",
+                PatternComparator.defaultPatternComparator());
+    }
+
     @Nested
     class VerifyNatureNumber {
 
         @Test
         void actual_type_should_be_integer() {
             AssertionError error = assertThrows(AssertionError.class, () ->
-                    assertNaturalNumber("\"1\""));
+                    assertExpect("**ANY_NATURAL_NUMBER", "\"1\""));
 
             assertThat(error.getMessage()).contains("Type miss matched, expect Number but String");
         }
 
-        private void assertNaturalNumber(final String actualValue) throws JSONException {
-            assertEquals("{\"prop\":\"**NATURAL_NUMBER\"}", "{\"prop\":" + actualValue + "}",
-                    PatternComparator.defaultPatternComparator());
-        }
-
         @Test
         void actual_value_should_be_nature_number() {
-            assertThrows(AssertionError.class, () -> assertNaturalNumber("0"));
-            assertThrows(AssertionError.class, () -> assertNaturalNumber("-1"));
-            assertThrows(AssertionError.class, () -> assertNaturalNumber("1.0"));
+            assertThrows(AssertionError.class, () -> assertExpect("**ANY_NATURAL_NUMBER", "0"));
+            assertThrows(AssertionError.class, () -> assertExpect("**ANY_NATURAL_NUMBER", "-1"));
+            assertThrows(AssertionError.class, () -> assertExpect("**ANY_NATURAL_NUMBER", "1.0"));
         }
 
         @Test
         void assert_ok() throws JSONException {
-            assertNaturalNumber("1");
+            assertExpect("**ANY_NATURAL_NUMBER", "1");
         }
     }
 
@@ -43,26 +44,37 @@ class PatternComparatorTest {
 
         @Test
         void actual_type_should_be_string() {
-            AssertionError error = assertThrows(AssertionError.class, () ->
-                    assertUTCTimestamp("1"));
+            AssertionError error = assertThrows(AssertionError.class, () -> assertExpect("**ANY_UTC_IN_ISO_8601", "1"));
 
             assertThat(error.getMessage()).contains("Type miss matched, expect String but Integer");
         }
 
-        private void assertUTCTimestamp(final String value) throws JSONException {
-            assertEquals("{\"prop\":\"**UTC_IN_ISO_8601\"}", "{\"prop\":" + value + "}",
-                    PatternComparator.defaultPatternComparator());
-        }
-
         @Test
         void actual_value_should_be_instant_in_iso8601() {
-            assertThrows(AssertionError.class, () -> assertUTCTimestamp("\"abcd\""));
+            assertThrows(AssertionError.class, () -> assertExpect("**ANY_UTC_IN_ISO_8601", "\"abcd\""));
         }
 
         @Test
         void assert_ok() throws JSONException {
-            assertUTCTimestamp("\"2001-10-11T12:11:19Z\"");
-            assertUTCTimestamp("\"2001-10-11T12:11:19.111Z\"");
+            assertExpect("**ANY_UTC_IN_ISO_8601", "\"2001-10-11T12:11:19Z\"");
+            assertExpect("**ANY_UTC_IN_ISO_8601", "\"2001-10-11T12:11:19.111Z\"");
+        }
+    }
+
+
+    @Nested
+    class VerifyObject {
+
+        @Test
+        void actual_type_should_be_string() {
+            AssertionError error = assertThrows(AssertionError.class, () -> assertExpect("**ANY_OBJECT", "1"));
+
+            assertThat(error.getMessage()).contains("Type miss matched, expect JSONObject but Integer");
+        }
+
+        @Test
+        void assert_ok() throws JSONException {
+            assertExpect("**ANY_OBJECT", "{\"a\":1}");
         }
     }
 }
