@@ -44,20 +44,20 @@ class PatternComparatorTest {
 
         @Test
         void actual_type_should_be_string() {
-            AssertionError error = assertThrows(AssertionError.class, () -> assertExpect("**ANY_UTC_IN_ISO_8601", "1"));
+            AssertionError error = assertThrows(AssertionError.class, () -> assertExpect("**ANY_UTC", "1"));
 
             assertThat(error.getMessage()).contains("Type miss matched, expect String but Integer");
         }
 
         @Test
         void actual_value_should_be_instant_in_iso8601() {
-            assertThrows(AssertionError.class, () -> assertExpect("**ANY_UTC_IN_ISO_8601", "\"abcd\""));
+            assertThrows(AssertionError.class, () -> assertExpect("**ANY_UTC", "\"abcd\""));
         }
 
         @Test
         void assert_ok() throws JSONException {
-            assertExpect("**ANY_UTC_IN_ISO_8601", "\"2001-10-11T12:11:19Z\"");
-            assertExpect("**ANY_UTC_IN_ISO_8601", "\"2001-10-11T12:11:19.111Z\"");
+            assertExpect("**ANY_UTC", "\"2001-10-11T12:11:19Z\"");
+            assertExpect("**ANY_UTC", "\"2001-10-11T12:11:19.111Z\"");
         }
     }
 
@@ -75,6 +75,27 @@ class PatternComparatorTest {
         @Test
         void assert_ok() throws JSONException {
             assertExpect("**ANY_OBJECT", "{\"a\":1}");
+        }
+    }
+
+    @Nested
+    class VerifyURL {
+
+        @Test
+        void actual_type_should_be_string() {
+            AssertionError error = assertThrows(AssertionError.class, () -> assertExpect("**ANY_URL", "1"));
+
+            assertThat(error.getMessage()).contains("Type miss matched, expect String but Integer");
+        }
+
+        @Test
+        void assert_failed_because_of_invalid_url() {
+            assertThrows(AssertionError.class, () -> assertExpect("**ANY_URL", "www.baidu.com"));
+        }
+
+        @Test
+        void assert_ok() throws JSONException {
+            assertExpect("**ANY_URL", "\"http://www.baidu.com\"");
         }
     }
 }

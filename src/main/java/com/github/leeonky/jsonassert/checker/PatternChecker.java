@@ -2,7 +2,7 @@ package com.github.leeonky.jsonassert.checker;
 
 import java.util.regex.Pattern;
 
-public class PatternChecker extends AbstractChecker implements Checker {
+public class PatternChecker extends AbstractChecker {
 
     private final String pattern;
 

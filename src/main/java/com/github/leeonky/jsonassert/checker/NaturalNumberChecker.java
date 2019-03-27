@@ -2,7 +2,7 @@ package com.github.leeonky.jsonassert.checker;
 
 import java.math.BigInteger;
 
-public class NaturalNumberChecker extends AbstractChecker implements Checker {
+public class NaturalNumberChecker extends AbstractChecker {
 
     public NaturalNumberChecker() {
         super(Number.class);

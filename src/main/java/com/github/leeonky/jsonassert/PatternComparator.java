@@ -1,9 +1,6 @@
 package com.github.leeonky.jsonassert;
 
-import com.github.leeonky.jsonassert.checker.Checker;
-import com.github.leeonky.jsonassert.checker.NaturalNumberChecker;
-import com.github.leeonky.jsonassert.checker.ObjectChecker;
-import com.github.leeonky.jsonassert.checker.PatternChecker;
+import com.github.leeonky.jsonassert.checker.*;
 import org.json.JSONException;
 import org.skyscreamer.jsonassert.JSONCompareMode;
 import org.skyscreamer.jsonassert.JSONCompareResult;
@@ -23,9 +20,10 @@ public class PatternComparator extends DefaultComparator {
 
     public PatternComparator(String prefix) {
         super(JSONCompareMode.STRICT);
+        checkers.put(prefix + "ANY_URL", new URLChecker());
         checkers.put(prefix + "ANY_NATURAL_NUMBER", new NaturalNumberChecker());
         checkers.put(prefix + "ANY_OBJECT", new ObjectChecker());
-        checkers.put(prefix + "ANY_UTC_IN_ISO_8601", new PatternChecker("\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.?\\d*Z", String.class));
+        checkers.put(prefix + "ANY_UTC", new PatternChecker("\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.?\\d*Z", String.class));
     }
 
     public static PatternComparator defaultPatternComparator() {
