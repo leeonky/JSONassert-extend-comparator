@@ -16,6 +16,15 @@ class PatternComparatorTest {
     }
 
     @Nested
+    class VerifyDefault {
+        @Test
+        void assert_by_default() throws JSONException {
+            assertEquals("{\"prop\":1}", "{\"prop\":" + "1" + "}",
+                    PatternComparator.defaultPatternComparator());
+        }
+    }
+
+    @Nested
     class VerifyNatureNumber {
 
         @Test

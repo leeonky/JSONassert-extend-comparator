@@ -34,11 +34,12 @@ public class PatternComparator extends DefaultComparator {
     public void compareValues(String prefix, Object expectedValue, Object actualValue, JSONCompareResult result) throws JSONException {
         if (expectedValue instanceof String) {
             Checker checker = checkers.get(expectedValue);
-            if (checker != null)
+            if (checker != null) {
                 checker.verify(prefix, expectedValue, actualValue, result);
-            else
-                super.compareValues(prefix, expectedValue, actualValue, result);
+                return;
+            }
         }
+        super.compareValues(prefix, expectedValue, actualValue, result);
     }
 
 }
