@@ -10,7 +10,7 @@ import static org.skyscreamer.jsonassert.JSONAssert.assertEquals;
 
 class PatternComparatorTest {
 
-    private void assertExpect(final String expect, final String actualValue) throws JSONException {
+    public static void assertExpect(final String expect, final String actualValue) throws JSONException {
         assertEquals("{\"prop\":\"" + expect + "\"}", "{\"prop\":" + actualValue + "}",
                 PatternComparator.defaultPatternComparator());
     }
@@ -70,22 +70,6 @@ class PatternComparatorTest {
         }
     }
 
-
-    @Nested
-    class VerifyObject {
-
-        @Test
-        void actual_type_should_be_string() {
-            AssertionError error = assertThrows(AssertionError.class, () -> assertExpect("**ANY_OBJECT", "1"));
-
-            assertThat(error.getMessage()).contains("Type miss matched, expect JSONObject but Integer");
-        }
-
-        @Test
-        void assert_ok() throws JSONException {
-            assertExpect("**ANY_OBJECT", "{\"a\":1}");
-        }
-    }
 
     @Nested
     class VerifyURL {

@@ -33,7 +33,7 @@ public class PatternComparator extends DefaultComparator {
     @Override
     public void compareValues(String prefix, Object expectedValue, Object actualValue, JSONCompareResult result) throws JSONException {
         if (expectedValue instanceof String) {
-            Checker checker = checkers.get(expectedValue);
+            Checker checker = checkers.get(((String) expectedValue).split(" ")[0]);
             if (checker != null) {
                 checker.verify(prefix, expectedValue, actualValue, result);
                 return;
