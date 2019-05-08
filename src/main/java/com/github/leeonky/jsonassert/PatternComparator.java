@@ -14,11 +14,7 @@ public class PatternComparator extends DefaultComparator {
 
     private Map<String, Checker> checkers = new HashMap<>();
 
-    public PatternComparator() {
-        this(PREFIX);
-    }
-
-    public PatternComparator(String prefix) {
+    private PatternComparator(String prefix) {
         super(JSONCompareMode.STRICT);
         checkers.put(prefix + "ANY_URL", new URLChecker());
         checkers.put(prefix + "ANY_NATURAL_NUMBER", new NaturalNumberChecker());
@@ -27,7 +23,7 @@ public class PatternComparator extends DefaultComparator {
     }
 
     public static PatternComparator defaultPatternComparator() {
-        return new PatternComparator();
+        return new PatternComparator(PREFIX);
     }
 
     @Override
