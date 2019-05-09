@@ -107,3 +107,7 @@ task currentVersion {
         println project.version
     }
 }
+
+tasks.coveralls {
+    dependsOn jacocoTestReport
+}
