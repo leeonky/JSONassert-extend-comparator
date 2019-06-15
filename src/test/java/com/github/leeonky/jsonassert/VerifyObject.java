@@ -64,5 +64,15 @@ class VerifyObject {
 
             assertThat(runtimeException.getMessage()).contains("SyntaxException: string should end with '''\n** = '\n      ^");
         }
+
+        @Test
+        void verify_json_data() throws JSONException {
+            assertExpect("** .name='tom'", "{\"name\": \"tom\"}");
+        }
+
+        @Test
+        void verify_json_array() throws JSONException {
+            assertExpect("** is List which .size=2 and [0]=1", "[1, 2]");
+        }
     }
 }
