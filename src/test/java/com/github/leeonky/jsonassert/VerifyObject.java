@@ -49,4 +49,20 @@ class VerifyObject {
             }
         }
     }
+
+    @Nested
+    class DALVerify {
+
+        @Test
+        void verify_pass() throws JSONException {
+            assertExpect("**is URL which .protocol='http'", "\"http://www.baidu.com\"");
+        }
+
+        @Test
+        void get_syntax_error() {
+            RuntimeException runtimeException = assertThrows(RuntimeException.class, () -> assertExpect("** = '", "\"a\""));
+
+            assertThat(runtimeException.getMessage()).contains("SyntaxException: string should end with '''\n** = '\n      ^");
+        }
+    }
 }
