@@ -45,7 +45,7 @@ public class PatternComparator extends DefaultComparator {
             }
         });
 
-        dataAssert.getCompilingContextBuilder().registerListType(JSONArray.class, new ListAccessor<JSONArray>() {
+        dataAssert.getCompilingContextBuilder().registerListAccessor(JSONArray.class, new ListAccessor<JSONArray>() {
             @Override
             public Object get(JSONArray jsonArray, int index) {
                 try {
