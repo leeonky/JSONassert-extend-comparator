@@ -79,9 +79,10 @@ public class PatternComparator extends DefaultComparator {
                 checker.verify(prefix, expectedValue, actualValue, result);
                 return;
             }
-            if (sourceCode.startsWith(this.prefix)) {
+            String trim = sourceCode.trim();
+            if (trim.startsWith(this.prefix)) {
                 try {
-                    AssertResult assertResult = dataAssert.assertData(actualValue, sourceCode.substring(this.prefix.length()));
+                    AssertResult assertResult = dataAssert.assertData(actualValue, trim.substring(this.prefix.length()));
                     if (!assertResult.isPassed())
                         result.fail(prefix, expectedValue, actualValue);
                     return;
