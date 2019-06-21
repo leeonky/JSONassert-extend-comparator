@@ -84,7 +84,7 @@ public class PatternComparator extends DefaultComparator {
                 try {
                     AssertResult assertResult = dataAssert.assertData(actualValue, trim.substring(this.prefix.length()));
                     if (!assertResult.isPassed())
-                        result.fail(prefix, expectedValue, actualValue);
+                        result.fail(prefix, expectedValue, String.valueOf(actualValue));
                     return;
                 } catch (DalException e) {
                     throw new RuntimeException(e.getClass().getSimpleName() + ": " + e.getMessage() + "\n" + expectedValue + "\n"
