@@ -5,7 +5,6 @@ import com.github.leeonky.dal.DalException;
 import com.github.leeonky.dal.DataAssert;
 import com.github.leeonky.dal.util.ListAccessor;
 import com.github.leeonky.dal.util.PropertyAccessor;
-import com.github.leeonky.jsonassert.checker.*;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -13,21 +12,19 @@ import org.skyscreamer.jsonassert.JSONCompareMode;
 import org.skyscreamer.jsonassert.JSONCompareResult;
 import org.skyscreamer.jsonassert.comparator.DefaultComparator;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
 
 public class PatternComparator extends DefaultComparator {
     public static final String PREFIX = "**";
     private final String prefix;
     private DataAssert dataAssert = new DataAssert();
-    private Map<String, Checker> checkers = new HashMap<>();
 
     private PatternComparator(String prefix) {
         super(JSONCompareMode.STRICT);
         this.prefix = prefix;
-        checkers.put(prefix + "ANY_URL", new URLChecker());
-        checkers.put(prefix + "ANY_NATURAL_NUMBER", new NaturalNumberChecker());
-        checkers.put(prefix + "ANY_OBJECT", new ObjectChecker());
-        checkers.put(prefix + "ANY_UTC", new PatternChecker("\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.?\\d*Z", String.class));
 
         dataAssert.getRuntimeContextBuilder().registerPropertyAccessor(JSONObject.class, new PropertyAccessor<JSONObject>() {
             @Override
@@ -46,6 +43,11 @@ public class PatternComparator extends DefaultComparator {
                 while (iterator.hasNext())
                     set.add(iterator.next().toString());
                 return set;
+            }
+
+            @Override
+            public boolean isNull(JSONObject instance) {
+                return instance == null || instance.equals(JSONObject.NULL);
             }
         });
 
@@ -78,11 +80,6 @@ public class PatternComparator extends DefaultComparator {
     public void compareValues(String prefix, Object expectedValue, Object actualValue, JSONCompareResult result) throws JSONException {
         if (expectedValue instanceof String) {
             String sourceCode = (String) expectedValue;
-            Checker checker = checkers.get(sourceCode.split(" ")[0]);
-            if (checker != null) {
-                checker.verify(prefix, expectedValue, actualValue, result);
-                return;
-            }
             String trim = sourceCode.trim();
             if (trim.startsWith(this.prefix)) {
                 try {
