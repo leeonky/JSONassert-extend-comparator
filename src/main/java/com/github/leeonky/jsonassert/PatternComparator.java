@@ -29,10 +29,14 @@ public class PatternComparator extends DefaultComparator {
         checkers.put(prefix + "ANY_OBJECT", new ObjectChecker());
         checkers.put(prefix + "ANY_UTC", new PatternChecker("\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.?\\d*Z", String.class));
 
-        dataAssert.getCompilingContextBuilder().registerPropertyAccessor(JSONObject.class, new PropertyAccessor<JSONObject>() {
+        dataAssert.getRuntimeContextBuilder().registerPropertyAccessor(JSONObject.class, new PropertyAccessor<JSONObject>() {
             @Override
-            public Object getValue(JSONObject instance, String name) throws Exception {
-                return instance.get(name);
+            public Object getValue(JSONObject instance, String name) {
+                try {
+                    return instance.get(name);
+                } catch (JSONException e) {
+                    throw new IllegalArgumentException(e);
+                }
             }
 
             @Override
@@ -45,7 +49,7 @@ public class PatternComparator extends DefaultComparator {
             }
         });
 
-        dataAssert.getCompilingContextBuilder().registerListAccessor(JSONArray.class, new ListAccessor<JSONArray>() {
+        dataAssert.getRuntimeContextBuilder().registerListAccessor(JSONArray.class, new ListAccessor<JSONArray>() {
             @Override
             public Object get(JSONArray jsonArray, int index) {
                 try {
