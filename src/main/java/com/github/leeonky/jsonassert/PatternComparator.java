@@ -30,7 +30,7 @@ public class PatternComparator extends DefaultComparator {
             @Override
             public Object getValue(JSONObject instance, String name) {
                 try {
-                    return instance.get(name);
+                    return instance.has(name) ? instance.get(name) : null;
                 } catch (JSONException e) {
                     throw new IllegalArgumentException(e);
                 }
