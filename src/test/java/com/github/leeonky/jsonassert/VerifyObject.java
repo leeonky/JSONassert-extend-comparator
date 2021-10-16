@@ -27,7 +27,7 @@ class VerifyObject {
         void get_syntax_error() {
             RuntimeException runtimeException = assertThrows(RuntimeException.class, () -> assertExpect("** = '", "\"a\""));
 
-            assertThat(runtimeException.getMessage()).contains("SyntaxException: string should end with '''\n** = '\n      ^");
+            assertThat(runtimeException.getMessage()).contains("SyntaxException: should end with `'`\n= '\n   ^");
         }
 
         @Test
@@ -38,6 +38,23 @@ class VerifyObject {
         @Test
         void verify_json_array() throws JSONException {
             assertExpect("** is List which .size=2 and [0]=1", "[1, 2]");
+        }
+
+        @Test
+        void assert_failure() {
+            AssertionError assertionError = assertThrows(AssertionError.class, () -> assertExpect("** = 1", "\"a\""));
+
+            assertThat(assertionError).hasMessage("prop\n" +
+                    "Expected: ** = 1\n" +
+                    "     got: a\n" +
+                    " ; \n" +
+                    "expected java.lang.String\n" +
+                    "<a>\n" +
+                    "equals to java.lang.Integer\n" +
+                    "<1>\n" +
+                    "but was not\n" +
+                    "= 1\n" +
+                    "  ^");
         }
     }
 }
