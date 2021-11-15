@@ -10,3 +10,5 @@
 [![Maintainability](https://api.codeclimate.com/v1/badges/ddb1624fbab4db1f7638/maintainability)](https://codeclimate.com/github/leeonky/JSONassert-extend-comparator/maintainability)
 [![Code Climate issues](https://img.shields.io/codeclimate/issues/leeonky/JSONassert-extend-comparator.svg)](https://codeclimate.com/github/leeonky/JSONassert-extend-comparator/maintainability)
 [![Code Climate maintainability (percentage)](https://img.shields.io/codeclimate/maintainability-percentage/leeonky/JSONassert-extend-comparator.svg)](https://codeclimate.com/github/leeonky/JSONassert-extend-comparator/maintainability)
+
+Please use https://github.com/leeonky/JSONassert-DAL

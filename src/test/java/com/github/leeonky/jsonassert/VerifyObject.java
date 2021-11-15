@@ -48,9 +48,9 @@ class VerifyObject {
                     "Expected: ** = 1\n" +
                     "     got: a\n" +
                     " ; \n" +
-                    "expected java.lang.String\n" +
+                    "Expecting java.lang.String\n" +
                     "<a>\n" +
-                    "equals to java.lang.Integer\n" +
+                    "to be equal to java.lang.Integer\n" +
                     "<1>\n" +
                     "but was not\n" +
                     "= 1\n" +
