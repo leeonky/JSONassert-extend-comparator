@@ -3,8 +3,8 @@ package com.github.leeonky.jsonassert;
 import com.github.leeonky.dal.DAL;
 import com.github.leeonky.dal.ast.AssertionFailure;
 import com.github.leeonky.dal.runtime.ArrayAccessor;
-import com.github.leeonky.dal.runtime.DalException;
 import com.github.leeonky.dal.runtime.PropertyAccessor;
+import com.github.leeonky.interpreter.InterpreterException;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -23,7 +23,7 @@ import static java.util.stream.StreamSupport.stream;
 public class PatternComparator extends DefaultComparator {
     public static final String PREFIX = "**";
     private final String prefix;
-    private DAL dal = new DAL();
+    private DAL dal = new DAL().extend();
 
     private PatternComparator(String prefix) {
         super(JSONCompareMode.STRICT);
@@ -91,7 +91,7 @@ public class PatternComparator extends DefaultComparator {
                 } catch (AssertionFailure e) {
                     result.fail(prefix, expectedValue, String.valueOf(actualValue));
                     result.fail("\n" + e.getMessage() + "\n" + e.show(code));
-                } catch (DalException e) {
+                } catch (InterpreterException e) {
                     throw new RuntimeException(e.getClass().getSimpleName() + ": " + e.getMessage() + "\n" + e.show(code));
                 }
                 return;
